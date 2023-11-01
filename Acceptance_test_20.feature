@@ -1,27 +1,25 @@
-Feature: Get Crops
+Feature: Obtención y Creación para Productos Agrícolas
 
-  Como desarrollador que trabaja en la aplicación Ayni,
-  Quiero obtener la información de los cultivos mediante una API
-  Para mostrarla en la aplicación.
+  Como desarrollador, quiero obtener y crear productos agrícolas a través de una API. Esto permitirá a los usuarios acceder y crear registros de productos agrícolas en la aplicación.
 
-  Scenario: Obtención de información de cultivos existentes
+  Background:
+    Given un endpoint "http://localhost:%d/api/v1/products" disponible
 
-    Given que tengo acceso a la API de registro de cultivos
-    When solicite los campos de información de cultivos
-    Then obtendré el registro de los cultivos con la información existente.
+  Scenario: Obtención de un producto
+    Given que el usuario solicita información de un producto existente
+    When realiza una solicitud de obtención de cultivo a través del endpoint GET /products/{id}
+    Then se recibe un response con status 200
+    And usando Products Resource este es incluido en el Response Body con valores del producto
 
-    Examples:
-      | ID de Cultivo | Tipo de Cultivo | Fecha de Plantación | Cantidad (kg) |
-      | 12345         | Maíz           | 2023-10-15         | 500          |
-      | 67890         | Tomates        | 2023-09-01         | 300          |
-
-  Scenario: Solicitud rechazada por datos inválidos de un nuevo cultivo
-
-    Given que tengo acceso a la API de registro de cultivos
-    When envíe la solicitud con datos inválidos de un nuevo cultivo
-    Then la solicitud es rechazada.
+  Scenario: Creación de un producto exitoso
+    Given que se quiere añadir un nuevo producto
+    When el usuario realice una petición de creación POST a /api/products con los valores del nuevo producto agrícola
+    Then se recibe un response con status 200
+    And el recurso de cultivos desarrollado es incluido en el Response Body con los valores del producto
 
     Examples:
-      | Tipo de Cultivo | Fecha de Plantación | Cantidad (kg) |
-      |                | 2023-10-15         | 500          |
-      | Maíz           |                    | 300          |
+      | nombre      | tipo         | cantidad | precio |
+      | Manzanas    | Fruta        | 100      | 2.50   |
+      | Tomates     | Verdura      | 200      | 1.75   |
+      | Zanahorias  | Verdura      | 150      | 1.00   |
+
