@@ -1,26 +1,18 @@
-Feature: Get User
+Feature: Creación y Obtención de Cultivos
 
-  Como desarrollador parte del equipo de GreatMinds,
-  Quiero obtener la información de un usuario mediante una API para mostrarla en la aplicación.
+  Como desarrollador, quiero añadir y obtener cultivos a través de una API, para que los usuarios puedan interactuar con la aplicación de manera eficiente.
 
-  Scenario: Obtención exitosa de información de un usuario
+  Background:
+    Given un endpoint "http://localhost:%d/api/v1/crops" disponible
 
-    Given que tengo a disposición la obtención de información de usuarios por un API
-    When solicite información de un usuario registrado
-    Then recibo la información del usuario.
+  Scenario: Creación de cultivo exitoso
+    Given que el usuario proporciona la información del cultivo
+    When realiza una solicitud de creación de cultivo con los valores propios
+    Then se recibe un response con status 200
+    And un Crops Resource es incluido en el Response Body con valores del cultivo
 
-    Examples:
-      | ID de Usuario |
-      | 12345         |
-      | 67890         |
-
-  Scenario: Solicitud de información inválida de un usuario
-
-    Given que tengo a disposición la obtención de información de usuarios por un API
-    When solicito información inválida de un usuario
-    Then recibo un mensaje de error.
-
-    Examples:
-      | ID de Usuario |
-      | "abc"         |
-      | 98765         |
+  Scenario: Obtención de cultivo exitoso
+    Given que el usuario solicita información de un cultivo existente
+    When realiza una solicitud de obtención de cultivo a través del endpoint GET /crops/{id}
+    Then se recibe un response con status 200
+    And usando Crops Resource este es incluido en el Response Body con valores del cultivo
