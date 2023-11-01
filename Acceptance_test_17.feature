@@ -1,26 +1,29 @@
-Feature: Post User
+Feature: Autenticación, Creación y Obtención de Usuarios
 
-  Como desarrollador que trabaja en la aplicación Ayni,
-  Quiero registrar a un nuevo usuario mediante una API para visualizar los usuarios afiliados a nuestra aplicación.
+  Como desarrollador, quiero implementar autenticación, creación y obtención de usuarios a través de una API para que pueda estar disponible la creación de usuarios e iniciar sesión para la aplicación.
 
-  Scenario: Registro exitoso de un nuevo usuario
+  Background:
+    Given un endpoint "http://localhost:%d/api/v1/users" disponible
 
-    Given que tengo acceso a la API de registro de usuarios
-    When envíe una solicitud para el registro de un nuevo usuario
-    Then el usuario se registra satisfactoriamente.
-
-    Examples:
-      | Nombre    | Email                    | Contraseña | Rol          |
-      | Juan      | juan@example.com         | password1 | Usuario      |
-      | María     | maria@example.com        | secret123 | Administrador|
-
-  Scenario: Solicitud rechazada por datos inválidos
-
-    Given que tengo acceso a la API de registro de usuarios
-    When envíe una solicitud con datos inválidos
-    Then la solicitud es rechazada.
+  Scenario Outline: Usuario accede con credenciales válidas
+    Given que un usuario ha ingresado sus credenciales <credenciales>
+    When realiza una solicitud de autenticación
+    Then el sistema debería retornar un token de acceso válido
+    And el estado de la respuesta debe ser 200 OK
 
     Examples:
-      | Nombre    | Email                    | Contraseña | Rol          |
-      |           | juan@example.com         | password1 | Usuario      |
-      | María     |                          | secret123 | Administrador|
+      | credenciales       |
+      | usuario1, pass1    |
+      | usuario2, pass2    |
+      | usuario3, pass3    |
+
+  Scenario Outline: Se crea un nuevo usuario
+    Given que un usuario quiere registrarse en la aplicación
+    When una solicitud de creación es enviada con valores <nombre>, <correo>, <contraseña>
+    Then se recibe un response con status 200
+    And se incluye un User Resource en el Response Body, con valores <nombre>, <correo>, <contraseña>
+
+    Examples:
+      | nombre | correo              | contraseña     |
+      | Juan   | juan123@gmail.com   | contraseña567 |
+      | María  | maria456@gmail.com  | prueba123      |
