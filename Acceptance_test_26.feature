@@ -12,7 +12,7 @@ Feature: Change order status
     Then a response is received with status 200
 
   @order-status-changed-to-qualificated
-  Scenario: Successful Login
+  Scenario: Order status changed to qualificated
     Given a order resource with "id:" 1
     When a Post Request is sent with values "orderId": 1
     Then a response is received with status 200
