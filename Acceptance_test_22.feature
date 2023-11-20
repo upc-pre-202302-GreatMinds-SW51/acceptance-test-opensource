@@ -4,7 +4,7 @@ Feature: User registration
   I want to implement security features through an API
   So that the application is not vulnerable to attacks
 
-  Background: Given the endpoint "http://localhost:%d/api/v1/users"
+  Background: Given the endpoint "http://localhost:%d/api/v1/auth"
   @User-registration
   Scenario: Successful registration of a new user
     When a Post Request is sent with values "Jorge", "jorge@gmail.com", "contrasenia"
